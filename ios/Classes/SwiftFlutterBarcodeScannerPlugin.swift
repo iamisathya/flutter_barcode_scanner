@@ -184,7 +184,16 @@ class BarcodeScannerViewController: UIViewController {
     //Bottom view
     private lazy var bottomView : UIView! = {
         let view = UIView()
-        view.backgroundColor = UIColor.black
+        view.backgroundColor = UIColor.white
+        view.translatesAutoresizingMaskIntoConstraints = false
+        return view
+    }()
+
+    //Helper text
+    public lazy var helperText: UILabel! = {
+    let view = UILabel()
+        view.text = "Just scan a QR code for quick access to features for product"
+        view.textColor = UIColor.black
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
     }()
@@ -217,6 +226,7 @@ class BarcodeScannerViewController: UIViewController {
     public lazy var cancelButton: UIButton! = {
         let view = UIButton()
         view.setTitle(SwiftFlutterBarcodeScannerPlugin.cancelButtonText, for: .normal)
+        view.setTitleColor(UIColor.black, for: .normal)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.addTarget(self, action: #selector(BarcodeScannerViewController.cancelButtonClicked), for: .touchUpInside)
         return view
@@ -362,29 +372,46 @@ class BarcodeScannerViewController: UIViewController {
         self.view.addSubview(bottomView)
         self.view.addSubview(cancelButton)
         self.view.addSubview(flashIcon)
+        self.view.addSubview(helperText)
         self.view.addSubview(switchCameraButton)
         
         bottomView.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant:0).isActive = true
         bottomView.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant:0).isActive = true
         bottomView.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:0).isActive = true
-        bottomView.heightAnchor.constraint(equalToConstant:self.isOrientationPortrait ? 100.0 : 70.0).isActive=true
+        bottomView.heightAnchor.constraint(equalToConstant:self.isOrientationPortrait ? 200.0 : 70.0).isActive=true
         
-        flashIcon.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
-        flashIcon.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: -10).isActive = true
-        flashIcon.heightAnchor.constraint(equalToConstant: 40.0).isActive = true
-        flashIcon.widthAnchor.constraint(equalToConstant: 40.0).isActive = true
+        flashIcon.translatesAutoresizingMaskIntoConstraints = false
+        flashIcon.rightAnchor.constraint(equalTo: view.rightAnchor, constant: 60.0).isActive = true
+        flashIcon.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20.0).isActive = true
+        flashIcon.heightAnchor.constraint(equalToConstant: 30.0).isActive = true
+        flashIcon.widthAnchor.constraint(equalToConstant: 30.0).isActive = true
+
+        cancelButton.widthAnchor.constraint(equalToConstant: 182.0).isActive = true
+        cancelButton.heightAnchor.constraint(equalToConstant: 50.0).isActive = true
+        cancelButton.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor,constant: -30.0).isActive=true
+        cancelButton.titleLabel?.font = .systemFont(ofSize: 14)
+        cancelButton.backgroundColor = UIColor(red: 255/255, green: 191/255, blue: 58/255, alpha: 1)
+        cancelButton.centerXAnchor.constraint(equalTo: view.centerXAnchor).isActive = true
         
-        cancelButton.translatesAutoresizingMaskIntoConstraints = false
-        cancelButton.widthAnchor.constraint(equalToConstant: 100.0).isActive = true
-        cancelButton.heightAnchor.constraint(equalToConstant: 70.0).isActive = true
-        cancelButton.bottomAnchor.constraint(equalTo:view.bottomAnchor,constant: 0).isActive=true
-        cancelButton.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant:10).isActive = true
+        helperText.translatesAutoresizingMaskIntoConstraints = false
+        helperText.lineBreakMode = NSLineBreakMode.byWordWrapping
+        helperText.numberOfLines = 0
+        helperText.textAlignment = .center
+        helperText.font = helperText.font.withSize(14)
+        NSLayoutConstraint.activate([
+            helperText.topAnchor.constraint(equalTo: bottomView.topAnchor),
+            helperText.bottomAnchor.constraint(equalTo: bottomView.bottomAnchor, constant: -40.0),
+            helperText.leadingAnchor.constraint(equalTo: bottomView.leadingAnchor, constant: 30.0),
+            helperText.trailingAnchor.constraint(equalTo: bottomView.trailingAnchor, constant: -30.0)
+        ])
+        helperText.textColor = UIColor.black
         
         switchCameraButton.translatesAutoresizingMaskIntoConstraints = false
-        // A little bit to the right.
-        switchCameraButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 10).isActive = true
-        switchCameraButton.heightAnchor.constraint(equalToConstant: 70.0).isActive = true
-        switchCameraButton.bottomAnchor.constraint(equalTo: view.bottomAnchor, constant: 0).isActive = true
+                // A little bit to the right.
+        switchCameraButton.leftAnchor.constraint(equalTo: view.leftAnchor, constant: 20).isActive = true
+        switchCameraButton.heightAnchor.constraint(equalToConstant: 30.0).isActive = true
+        switchCameraButton.widthAnchor.constraint(equalToConstant: 30.0).isActive = true
+        switchCameraButton.topAnchor.constraint(equalTo: bottomView.topAnchor, constant: 20.0).isActive = true
     }
     
     /// Flash button click event listener
